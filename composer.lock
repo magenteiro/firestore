@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77f17b4151b706e09b225544a4387690",
+    "content-hash": "d7d5fbf2eb2f4ae052f9d22a83135c02",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -4455,6 +4455,53 @@
             "time": "2020-01-29T07:08:12+00:00"
         },
         {
+            "name": "magedev/brazilzipcode",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/m2-magedev/BrazilZipCode.git",
+                "reference": "6177a40e723c305bc513247b86fd62c6f525daec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/m2-magedev/BrazilZipCode/zipball/6177a40e723c305bc513247b86fd62c6f525daec",
+                "reference": "6177a40e723c305bc513247b86fd62c6f525daec",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "MageDev\\BrazilZipCode\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Walisson Costa Ferreira",
+                    "email": "walisson@magedev.com.br",
+                    "homepage": "https://github.com/m2-magedev/BrazilZipCode",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Magento 2 module to use brazil zipcode search services.",
+            "homepage": "https://github.com/m2-magedev/BrazilZipCode",
+            "keywords": [
+                "brazil zipcode",
+                "cep brasil",
+                "magento 2",
+                "magento 2 cep",
+                "magento2 cep",
+                "zipcode"
+            ],
+            "time": "2020-08-04T01:00:38+00:00"
+        },
+        {
             "name": "magento/adobe-stock-integration",
             "version": "2.0.0",
             "dist": {
@@ -4489,11 +4536,6 @@
         {
             "name": "magento/composer",
             "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magento/composer.git",
-                "reference": "fcc66f535d631788f2ba160ff547357086d9b2c9"
-            },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/magento/composer/zipball/fcc66f535d631788f2ba160ff547357086d9b2c9",
@@ -16788,6 +16830,44 @@
             "time": "2020-03-23T09:12:05+00:00"
         },
         {
+            "name": "rafaelstz/traducao_magento2_pt_br",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rafaelstz/traducao_magento2_pt_br.git",
+                "reference": "27d803bdb3d6b92557e69d36816264eac89a11c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rafaelstz/traducao_magento2_pt_br/zipball/27d803bdb3d6b92557e69d36816264eac89a11c5",
+                "reference": "27d803bdb3d6b92557e69d36816264eac89a11c5",
+                "shasum": ""
+            },
+            "type": "magento2-language",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Corrêa Gomes",
+                    "homepage": "https://github.com/rafaelstz"
+                },
+                {
+                    "name": "Magento official translations project for Magento 2",
+                    "homepage": "https://crowdin.com/project/magento-2"
+                }
+            ],
+            "description": "Tradução Magento 2 para Português do Brasil oficial da Magento ",
+            "homepage": "https://github.com/rafaelstz/traducao_magento2_pt_br",
+            "time": "2020-07-22T16:54:51+00:00"
+        },
+        {
             "name": "ralouphie/getallheaders",
             "version": "3.0.3",
             "source": {
@@ -20807,6 +20887,47 @@
             "time": "2018-02-14T22:37:14+00:00"
         },
         {
+            "name": "mage2tv/magento-cache-clean",
+            "version": "1.0.30",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mage2tv/magento-cache-clean.git",
+                "reference": "3cf8aad657057c7c925108954335ebace0c4abaf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mage2tv/magento-cache-clean/zipball/3cf8aad657057c7c925108954335ebace0c4abaf",
+                "reference": "3cf8aad657057c7c925108954335ebace0c4abaf",
+                "shasum": ""
+            },
+            "suggest": {
+                "magento/project-community-edition": "*"
+            },
+            "bin": [
+                "bin/cache-clean.js"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Vinai Kopp",
+                    "email": "vinai@netzarbeiter.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "A faster drop in replacement for bin/magento cache:clean with file watcher",
+            "homepage": "https://github.com/mage2tv/magento-cache-clean",
+            "keywords": [
+                "development",
+                "magento",
+                "utility"
+            ],
+            "time": "2020-07-10T06:13:06+00:00"
+        },
+        {
             "name": "magento/magento-coding-standard",
             "version": "5",
             "source": {
@@ -23796,10 +23917,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rafaelstz/traducao_magento2_pt_br": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }

@@ -11,6 +11,7 @@
         "sort-packages": true
     },
     "require": {
+        "magedev/brazilzipcode": "^1.1",
         "magento/composer-root-update-plugin": "~1.0",
         "magento/module-bundle-sample-data": "100.4.*",
         "magento/module-catalog-rule-sample-data": "100.4.*",
@@ -32,13 +33,15 @@
         "magento/module-widget-sample-data": "100.4.*",
         "magento/module-wishlist-sample-data": "100.4.*",
         "magento/product-community-edition": "2.4.0",
-        "magento/sample-data-media": "100.4.*"
+        "magento/sample-data-media": "100.4.*",
+        "rafaelstz/traducao_magento2_pt_br": "dev-master"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "~1.2.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "friendsofphp/php-cs-fixer": "~2.16.0",
         "lusitanian/oauth": "~0.8.10",
+        "mage2tv/magento-cache-clean": "^1.0",
         "magento/magento-coding-standard": "*",
         "magento/magento2-functional-testing-framework": "^3.0",
         "pdepend/pdepend": "~2.7.1",

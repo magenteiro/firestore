@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7d5fbf2eb2f4ae052f9d22a83135c02",
+    "content-hash": "0fa32f24ebfe63dda18f7cc69c1ce7bb",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -17034,6 +17034,42 @@
                 "promises"
             ],
             "time": "2020-05-12T15:16:56+00:00"
+        },
+        {
+            "name": "ricardomartins/pagseguro",
+            "version": "2.4.14",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/ricardomartins/pagseguro/ricardomartins-pagseguro-2.4.14.0.zip",
+                "shasum": "59ee112e596b97d2e2c8800c270921e2257ab68d"
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "RicardoMartins\\PagSeguro\\": ""
+                }
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Ricardo Martins",
+                    "email": "pagseguro-transparente@ricardomartins.net.br"
+                }
+            ],
+            "description": "Magento 2 Transparent Payment Module / PagSeguro Transparente para Magento 2"
         },
         {
             "name": "seld/jsonlint",

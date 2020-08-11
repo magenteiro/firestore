@@ -315,6 +315,8 @@ return [
         'Klarna_Kp' => 1,
         'MageDev_BrazilZipCode' => 1,
         'Magenteiro_ConfigInfo' => 1,
+        'Mageplaza_Core' => 1,
+        'Mageplaza_Smtp' => 1,
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeGraphQl' => 1,
         'RicardoMartins_PagSeguro' => 1,

@@ -1,0 +1,14 @@
+{
+    "name": "magenteiro/firestore",
+    "description": "Tema Base da Fire Store by Magenteiro",
+    "type": "magento2-theme",
+    "version": "1.0.0",
+    "license": [
+
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    }
+}

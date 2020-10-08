@@ -1,0 +1,6 @@
+#!/bin/bash
+bin/magento dev:urn-catalog:generate misc.xml
+bin/copyfromcontainer misc.xml
+mv src/misc.xml src/.idea/misc.xml 
+
+echo "URN's have been generated, you may now restart PHPStorm"

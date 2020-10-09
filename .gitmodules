@@ -1,6 +1,6 @@
 [submodule "src/app/code/ImaginationMedia/Correios"]
 	path = src/app/code/ImaginationMedia/Correios
-	url = git@bitbucket.org:r_martins/correios.git
+	url = https://r_martins@bitbucket.org/r_martins/correios.git
 [submodule "src/app/code/SystemCode/BrazilCustomerAttributes"]
 	path = src/app/code/SystemCode/BrazilCustomerAttributes
-	url = git@github.com:r-martins/Magento-SystemCode_BrazilCustomerAttributes.git
+	url = https://github.com/r-martins/Magento-SystemCode_BrazilCustomerAttributes.git

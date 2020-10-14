@@ -488,7 +488,7 @@
             "version": "v1.4.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/colinmollenhour/Cm_Cache_Backend_File.git",
+                "url": "git@github.com:colinmollenhour/Cm_Cache_Backend_File.git",
                 "reference": "03c7d4c0f43b2de1b559a3527d18ff697d306544"
             },
             "dist": {
@@ -524,7 +524,7 @@
             "version": "1.11.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/colinmollenhour/Cm_Cache_Backend_Redis.git",
+                "url": "git@github.com:colinmollenhour/Cm_Cache_Backend_Redis.git",
                 "reference": "389fb68de15660e39b055d149d31f3708b5d6cbc"
             },
             "dist": {
@@ -5040,7 +5040,7 @@
             "version": "0.1.13",
             "source": {
                 "type": "git",
-                "url": "https://github.com/magento/magento-composer-installer.git",
+                "url": "git@github.com:magento/magento-composer-installer.git",
                 "reference": "8b6c32f53b4944a5d6656e86344cd0f9784709a1"
             },
             "dist": {
@@ -17125,11 +17125,11 @@
         },
         {
             "name": "ricardomartins/pagseguro",
-            "version": "2.4.14",
+            "version": "2.7.2",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/ricardomartins/pagseguro/ricardomartins-pagseguro-2.4.14.0.zip",
-                "shasum": "59ee112e596b97d2e2c8800c270921e2257ab68d"
+                "url": "https://repo.magento.com/archives/ricardomartins/pagseguro/ricardomartins-pagseguro-2.7.2.0.zip",
+                "shasum": "4f114c2572c71ba36a968e273c12e1734d0b7a5b"
             },
             "require": {
                 "ext-curl": "*",

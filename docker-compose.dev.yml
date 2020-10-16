@@ -1,7 +1,7 @@
 # Mark Shust's Docker Configuration for Magento
 # (https://github.com/markshust/docker-magento)
 #
-# Version 33.0.0
+# Version 34.2.0
 
 version: "3"
 
@@ -21,7 +21,7 @@ services:
       #- ./src/var/log:/var/www/html/var/log:cached
       #- ./src/var/report:/var/www/html/var/report:cached
       # To sync your SSH to the container, uncomment the following line:
-      # - ~/.ssh/id_rsa:/var/www/.ssh/id_rsa:cached
+      #- ~/.ssh/id_rsa:/var/www/.ssh/id_rsa:cached
       # Linux only: remove the above lines and mount the entire src directory with:
       #- ./src:/var/www/html:cached
 

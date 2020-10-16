@@ -1,10 +1,12 @@
 #!/bin/bash
+source env/db.env
 BASE_URL=${1:-magento2.test}
 
 bin/stop
 
 docker-compose -f docker-compose.yml up -d
-sleep 1 #Ensure containers are started...
+[ $? != 0 ] && echo "Failed to start Docker services" && exit
+sleep 5 #Ensure containers are started...
 
 echo "Copying all files from host to container..."
 rm -rf src/vendor #Clear for step below
@@ -47,11 +49,13 @@ bin/clinotty composer global require hirak/prestissimo
 bin/clinotty composer update
 
 bin/clinotty bin/magento setup:install \
-  --db-host=db \
-  --db-name=magento \
-  --db-user=magento \
-  --db-password=magento \
+  --db-host=$MYSQL_HOST \
+  --db-name=$MYSQL_DATABASE \
+  --db-user=$MYSQL_USER \
+  --db-password=$MYSQL_PASSWORD \
   --base-url=https://$BASE_URL/ \
+  --base-url-secure=https://$BASE_URL/ \
+  --backend-frontname=admin \
   --admin-firstname=John \
   --admin-lastname=Smith \
   --admin-email=john.smith@gmail.com \
@@ -65,6 +69,16 @@ bin/clinotty bin/magento setup:install \
   --amqp-user=guest \
   --amqp-password=guest \
   --amqp-virtualhost=/ \
+  --cache-backend=redis \
+  --cache-backend-redis-server=redis \
+  --cache-backend-redis-db=0 \
+  --page-cache=redis \
+  --page-cache-redis-server=redis \
+  --page-cache-redis-db=1 \
+  --session-save=redis \
+  --session-save-redis-host=redis \
+  --session-save-redis-log-level=4 \
+  --session-save-redis-db=2 \
   --search-engine=elasticsearch7 \
   --elasticsearch-host=elasticsearch \
   --use-rewrites=1
@@ -76,15 +90,6 @@ bin/clinotty bin/magento indexer:reindex
 
 echo "Forcing deploy of static content to speed up initial requests..."
 bin/clinotty bin/magento setup:static-content:deploy -f
-
-echo "Enabling Redis for cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
-
-echo "Enabling Redis for Full Page Cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction  --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
-
-echo "Enabling Redis for session..."
-bin/clinotty bin/magento setup:config:set --no-interaction --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2
 
 echo "Re-indexing with Elasticsearch..."
 bin/clinotty bin/magento indexer:reindex

@@ -36,7 +36,7 @@
         "magento/sample-data-media": "100.4.*",
         "mageplaza/module-smtp": "^1.4",
         "rafaelstz/traducao_magento2_pt_br": "dev-master",
-        "ricardomartins/pagseguro": "^2.4"
+        "ricardomartins/pagseguro": "dev-master"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "~1.2.0",

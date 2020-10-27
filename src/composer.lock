@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56d3c91d4f47747c60b7cce1d36510af",
+    "content-hash": "ded28e9c8b73763f2a22ff6b448163ff",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -17641,11 +17641,17 @@
         },
         {
             "name": "ricardomartins/pagseguro",
-            "version": "2.7.2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/r-martins/PagSeguro-Magento-Transparente-M2.git",
+                "reference": "84c2c41144b1d1c4bababe338d9c5e5d26147bb2"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/ricardomartins/pagseguro/ricardomartins-pagseguro-2.7.2.0.zip",
-                "shasum": "4f114c2572c71ba36a968e273c12e1734d0b7a5b"
+                "url": "https://api.github.com/repos/r-martins/PagSeguro-Magento-Transparente-M2/zipball/84c2c41144b1d1c4bababe338d9c5e5d26147bb2",
+                "reference": "84c2c41144b1d1c4bababe338d9c5e5d26147bb2",
+                "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
@@ -17664,6 +17670,7 @@
                     "RicardoMartins\\PagSeguro\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0-or-later"
             ],
@@ -17673,7 +17680,8 @@
                     "email": "pagseguro-transparente@ricardomartins.net.br"
                 }
             ],
-            "description": "Magento 2 Transparent Payment Module / PagSeguro Transparente para Magento 2"
+            "description": "Magento 2 Transparent Payment Module / PagSeguro Transparente para Magento 2",
+            "time": "2020-10-21T02:59:58+00:00"
         },
         {
             "name": "seld/jsonlint",
@@ -25255,7 +25263,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "rafaelstz/traducao_magento2_pt_br": 20
+        "rafaelstz/traducao_magento2_pt_br": 20,
+        "ricardomartins/pagseguro": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

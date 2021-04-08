@@ -42,19 +42,54 @@ class UpdateProductsFromWishlistTest extends GraphQlAbstract
         $wishlist = $this->getWishlist();
         $qty = 5;
         $description = 'New Description';
-        $wishlistId = $wishlist['customer']['wishlist']['id'];
-        $wishlistItem = $wishlist['customer']['wishlist']['items'][0];
-        self::assertNotEquals($description, $wishlistItem['description']);
-        self::assertNotEquals($qty, $wishlistItem['qty']);
+        $customerWishlist = $wishlist['customer']['wishlists'][0];
+        $wishlistId = $customerWishlist['id'];
+        $wishlistItem = $customerWishlist['items_v2']['items'][0];
+        $this->assertNotEquals($description, $wishlistItem['description']);
+        $this->assertNotEquals($qty, $wishlistItem['quantity']);
 
-        $query = $this->getQuery((int) $wishlistId, (int) $wishlistItem['id'], $qty, $description);
+        $query = $this->getQuery($wishlistId, $wishlistItem['id'], $qty, $description);
         $response = $this->graphQlMutation($query, [], '', $this->getHeaderMap());
 
-        self::assertArrayHasKey('updateProductsInWishlist', $response);
-        self::assertArrayHasKey('wishlist', $response['updateProductsInWishlist']);
+        $this->assertArrayHasKey('updateProductsInWishlist', $response);
+        $this->assertArrayHasKey('wishlist', $response['updateProductsInWishlist']);
+        $this->assertEmpty($response['updateProductsInWishlist']['user_errors']);
         $wishlistResponse = $response['updateProductsInWishlist']['wishlist'];
-        self::assertEquals($qty, $wishlistResponse['items'][0]['qty']);
-        self::assertEquals($description, $wishlistResponse['items'][0]['description']);
+        $this->assertEquals($qty, $wishlistResponse['items_v2']['items'][0]['quantity']);
+        $this->assertEquals($description, $wishlistResponse['items_v2']['items'][0]['description']);
+    }
+
+    /**
+     * Test updating the wishlist item of another customer
+     *
+     * @magentoConfigFixture default_store wishlist/general/active 1
+     * @magentoApiDataFixture Magento/Customer/_files/two_customers.php
+     * @magentoApiDataFixture Magento/Wishlist/_files/two_wishlists_for_two_diff_customers.php
+     */
+    public function testUnauthorizedWishlistItemUpdate()
+    {
+        $wishlist = $this->getWishlist();
+        $customerWishlist = $wishlist['customer']['wishlists'][0];
+        $wishlistItem = $customerWishlist['items_v2']['items'][0];
+        $wishlist2 = $this->getWishlist('customer_two@example.com');
+        $wishlist2Id = $wishlist2['customer']['wishlists'][0]['id'];
+        $qty = 2;
+        $description = 'New Description';
+        $updateWishlistQuery = $this->getQuery($wishlist2Id, $wishlistItem['id'], $qty, $description);
+        $response = $this->graphQlMutation(
+            $updateWishlistQuery,
+            [],
+            '',
+            $this->getHeaderMap('customer_two@example.com')
+        );
+        self::assertEquals(1, $response['updateProductsInWishlist']['wishlist']['items_count']);
+        self::assertNotEmpty($response['updateProductsInWishlist']['wishlist']['items_v2'], 'empty wish list items');
+        self::assertCount(1, $response['updateProductsInWishlist']['wishlist']['items_v2']);
+        self::assertNotEmpty($response['updateProductsInWishlist']['user_errors'], 'No user errors');
+        self::assertEquals(
+            'The wishlist item with ID "' . $wishlistItem['id'] . '" does not belong to the wishlist',
+            $response['updateProductsInWishlist']['user_errors'][0]['message']
+        );
     }
 
     /**
@@ -67,15 +102,16 @@ class UpdateProductsFromWishlistTest extends GraphQlAbstract
     public function testUpdateProductInWishlistWithZeroQty()
     {
         $wishlist = $this->getWishlist();
-        $wishlistId = $wishlist['customer']['wishlist']['id'];
-        $wishlistItem = $wishlist['customer']['wishlist']['items'][0];
+        $customerWishlist = $wishlist['customer']['wishlists'][0];
+        $wishlistId = $customerWishlist['id'];
+        $wishlistItem = $customerWishlist['items_v2']['items'][0];
         $qty = 0;
         $description = 'Description for zero quantity';
-        $updateWishlistQuery = $this->getQuery((int) $wishlistId, (int) $wishlistItem['id'], $qty, $description);
+        $updateWishlistQuery = $this->getQuery($wishlistId, $wishlistItem['id'], $qty, $description);
         $response = $this->graphQlMutation($updateWishlistQuery, [], '', $this->getHeaderMap());
         self::assertEquals(1, $response['updateProductsInWishlist']['wishlist']['items_count']);
-        self::assertNotEmpty($response['updateProductsInWishlist']['wishlist']['items'], 'empty wish list items');
-        self::assertCount(1, $response['updateProductsInWishlist']['wishlist']['items']);
+        self::assertNotEmpty($response['updateProductsInWishlist']['wishlist']['items_v2'], 'empty wish list items');
+        self::assertCount(1, $response['updateProductsInWishlist']['wishlist']['items_v2']);
         self::assertArrayHasKey('user_errors', $response['updateProductsInWishlist']);
         self::assertCount(1, $response['updateProductsInWishlist']['user_errors']);
         $message = 'The quantity of a wish list item cannot be 0';
@@ -95,16 +131,17 @@ class UpdateProductsFromWishlistTest extends GraphQlAbstract
     public function testUpdateProductWithValidQtyAndNoDescription()
     {
         $wishlist = $this->getWishlist();
-        $wishlistId = $wishlist['customer']['wishlist']['id'];
-        $wishlistItem = $wishlist['customer']['wishlist']['items'][0];
+        $customerWishlist = $wishlist['customer']['wishlists'][0];
+        $wishlistId = $customerWishlist['id'];
+        $wishlistItem = $customerWishlist['items_v2']['items'][0];
         $qty = 2;
-        $updateWishlistQuery = $this->getQueryWithNoDescription((int) $wishlistId, (int) $wishlistItem['id'], $qty);
+        $updateWishlistQuery = $this->getQueryWithNoDescription($wishlistId, $wishlistItem['id'], $qty);
         $response = $this->graphQlMutation($updateWishlistQuery, [], '', $this->getHeaderMap());
         self::assertEquals(1, $response['updateProductsInWishlist']['wishlist']['items_count']);
-        self::assertNotEmpty($response['updateProductsInWishlist']['wishlist']['items'], 'empty wish list items');
-        self::assertCount(1, $response['updateProductsInWishlist']['wishlist']['items']);
-        $itemsInWishlist = $response['updateProductsInWishlist']['wishlist']['items'][0];
-        self::assertEquals($qty, $itemsInWishlist['qty']);
+        self::assertNotEmpty($response['updateProductsInWishlist']['wishlist']['items_v2'], 'empty wish list items');
+        self::assertCount(1, $response['updateProductsInWishlist']['wishlist']['items_v2']['items']);
+        $itemsInWishlist = $response['updateProductsInWishlist']['wishlist']['items_v2']['items'][0];
+        self::assertEquals($qty, $itemsInWishlist['quantity']);
         self::assertEquals('simple-1', $itemsInWishlist['product']['sku']);
     }
 
@@ -136,15 +173,15 @@ class UpdateProductsFromWishlistTest extends GraphQlAbstract
      * @return string
      */
     private function getQuery(
-        int $wishlistId,
-        int $wishlistItemId,
+        string $wishlistId,
+        string $wishlistItemId,
         int $qty,
         string $description
     ): string {
         return <<<MUTATION
 mutation {
   updateProductsInWishlist(
-    wishlistId: {$wishlistId},
+    wishlistId: "{$wishlistId}",
     wishlistItems: [
       {
         wishlist_item_id: "{$wishlistItemId}"
@@ -161,10 +198,12 @@ mutation {
       id
       sharing_code
       items_count
-      items {
-        id
+      items_v2 {
+        items{
+          id
         description
-        qty
+        quantity
+        }
       }
     }
   }
@@ -182,14 +221,14 @@ MUTATION;
      * @return string
      */
     private function getQueryWithNoDescription(
-        int $wishlistId,
-        int $wishlistItemId,
+        string $wishlistId,
+        string $wishlistItemId,
         int $qty
     ): string {
         return <<<MUTATION
 mutation {
   updateProductsInWishlist(
-    wishlistId: {$wishlistId},
+    wishlistId: "{$wishlistId}",
     wishlistItems: [
       {
         wishlist_item_id: "{$wishlistItemId}"
@@ -206,10 +245,12 @@ mutation {
       id
       sharing_code
       items_count
-      items {
-        id
-        qty
-        product{sku name}
+      items_v2 {
+       items{
+         id
+         quantity
+         product {sku name}
+      }
       }
     }
   }
@@ -220,13 +261,14 @@ MUTATION;
     /**
      * Get wishlist result
      *
+     * @param string $username
      * @return array
      *
      * @throws Exception
      */
-    public function getWishlist(): array
+    public function getWishlist(string $username = 'customer@example.com'): array
     {
-        return $this->graphQlQuery($this->getCustomerWishlistQuery(), [], '', $this->getHeaderMap());
+        return $this->graphQlQuery($this->getCustomerWishlistQuery(), [], '', $this->getHeaderMap($username));
     }
 
     /**
@@ -239,13 +281,20 @@ MUTATION;
         return <<<QUERY
 query {
   customer {
-    wishlist {
+    wishlists {
       id
       items_count
-      items {
+      sharing_code
+      updated_at
+      items_v2 {
+       items {
         id
-        qty
+        quantity
         description
+         product {
+          sku
+        }
+      }
       }
     }
   }

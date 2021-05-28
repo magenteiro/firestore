@@ -1,32 +1,13 @@
 #!/bin/bash
 set -o errexit
-[ -z "$1" ] && echo "Please specify the version to download (ex. 2.0.0)" && exit
 
-edition=${2:-community}
+VERSION=${1:-2.4.2}
+EDITION=${2:-community}
 
-if [[ "$edition" == "enterprise" ]]; then
-    rm -rf src
-    composer create-project --repository=https://repo.magento.com/ --ignore-platform-reqs magento/project-enterprise-edition="$1" src
-    exit 0
-fi
+bin/stop
+docker-compose -f docker-compose.yml up -d
+[ $? != 0 ] && echo "Failed to start Docker services" && exit
 
-if [ ! -f ~/.docker-magento/magento2-"$1".tar.gz ]; then
-    mkdir -p ~/.docker-magento
-    (cd ~/.docker-magento && curl -fOL http://pubfiles.nexcess.net/magento/ce-packages/magento2-"$1".tar.gz)
-fi
+bin/setup-composer-auth
 
-# Fallback download to hypernode if archive doesn't exist on Nexcess (smaller than 1MB)
-if ! tar -tzf  ~/.docker-magento/magento2-"$1".tar.gz -O &>/dev/null; then
-    (cd ~/.docker-magento && curl -o magento2-"$1".tar.gz -fOL https://www.magento.mirror.hypernode.com/releases/magento-"$1".tar.gz)
-fi
-
-# Final fallback. If no archive exists, let's use Composer!
-if ! tar -tzf  ~/.docker-magento/magento2-"$1".tar.gz -O &>/dev/null; then
-    echo "Archive not found, or not yet available due to new version release."
-    echo "Attempting install with Composer..."
-    rm -rf src
-    composer create-project --repository=https://repo.magento.com/ --ignore-platform-reqs magento/project-community-edition="$1" src
-else
-    echo "Extracting magento2-$1.tar.gz to ./src"
-    mkdir -p src && tar xzf ~/.docker-magento/magento2-"$1".tar.gz -o -C src
-fi
+bin/clinotty composer create-project --repository=https://repo.magento.com/ magento/project-"${EDITION}"-edition="${VERSION}" .

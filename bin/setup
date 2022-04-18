@@ -1,14 +1,20 @@
 #!/bin/bash
 set -o errexit
 
+MEM=$(docker info | grep "Total Memory" | cut -d':' -f2 | xargs | sed s/GiB//)
+# Docker reports RAM 0.2 less than what it is actually set to
+(( $(echo "$MEM < 5.8" | bc -l) )) && echo "There must be at least 6GB of RAM allocated to Docker to continue." && exit
+
 # shellcheck source=../env/db.env
 source env/db.env
+# shellcheck source=../env/elasticsearch.env
+source env/elasticsearch.env
 # shellcheck source=../env/magento.env
 source env/magento.env
+# shellcheck source=../env/rabbitmq.env
+source env/rabbitmq.env
 
-BASE_URL=${1:-magento2.test}
-ES_HOST=elasticsearch
-ES_PORT=9200
+DOMAIN=${1:-magento.test}
 
 bin/stop
 
@@ -16,23 +22,32 @@ docker-compose -f docker-compose.yml up -d
 [ $? != 0 ] && echo "Failed to start Docker services" && exit
 
 bin/clinotty chmod u+x bin/magento
-mv .vscode src
+rm -rf src && mkdir src
 
 echo "Waiting for connection to Elasticsearch..."
-bin/clinotty timeout 100 bash -c "
+bin/clinotty timeout $ES_HEALTHCHECK_TIMEOUT bash -c "
     until curl --silent --output /dev/null http://$ES_HOST:$ES_PORT/_cat/health?h=st; do
         printf '.'
-        sleep 5
+        sleep 2
     done"
 [ $? != 0 ] && echo "Failed to connect to Elasticsearch" && exit
+
+echo ""
+echo "Waiting for connection to RabbitMQ..."
+bin/clinotty timeout $RABBITMQ_HEALTHCHECK_TIMEOUT bash -c "
+    until curl --silent --output /dev/null http://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@$RABBITMQ_HOST:$RABBITMQ_MANAGEMENT_PORT/api/aliveness-test/%2F; do
+        printf '.'
+        sleep 2
+    done"
+[ $? != 0 ] && echo "Failed to connect to RabbitMQ" && exit
 
 bin/clinotty bin/magento setup:install \
   --db-host="$MYSQL_HOST" \
   --db-name="$MYSQL_DATABASE" \
   --db-user="$MYSQL_USER" \
   --db-password="$MYSQL_PASSWORD" \
-  --base-url=https://"$BASE_URL"/ \
-  --base-url-secure=https://"$BASE_URL"/ \
+  --base-url=https://"$DOMAIN"/ \
+  --base-url-secure=https://"$DOMAIN"/ \
   --backend-frontname="$MAGENTO_ADMIN_FRONTNAME" \
   --admin-firstname="$MAGENTO_ADMIN_FIRST_NAME" \
   --admin-lastname="$MAGENTO_ADMIN_LAST_NAME" \
@@ -42,11 +57,11 @@ bin/clinotty bin/magento setup:install \
   --language="$MAGENTO_LOCALE" \
   --currency="$MAGENTO_CURRENCY" \
   --timezone="$MAGENTO_TIMEZONE" \
-  --amqp-host=rabbitmq \
-  --amqp-port=5672 \
-  --amqp-user=guest \
-  --amqp-password=guest \
-  --amqp-virtualhost=/ \
+  --amqp-host="$RABBITMQ_HOST" \
+  --amqp-port="$RABBITMQ_PORT" \
+  --amqp-user="$RABBITMQ_DEFAULT_USER" \
+  --amqp-password="$RABBITMQ_DEFAULT_PASS" \
+  --amqp-virtualhost="$RABBITMQ_DEFAULT_VHOST" \
   --cache-backend=redis \
   --cache-backend-redis-server=redis \
   --cache-backend-redis-db=0 \
@@ -60,13 +75,11 @@ bin/clinotty bin/magento setup:install \
   --search-engine=elasticsearch7 \
   --elasticsearch-host=$ES_HOST \
   --elasticsearch-port=$ES_PORT \
-  --use-rewrites=1
+  --use-rewrites=1 \
+  --no-interaction
 
 echo "Copying files from container to host after install..."
 bin/copyfromcontainer --all
-
-echo "Turning on developer mode.."
-bin/clinotty bin/magento deploy:mode:set developer
 
 echo "Forcing deploy of static content to speed up initial requests..."
 bin/clinotty bin/magento setup:static-content:deploy -f
@@ -74,11 +87,19 @@ bin/clinotty bin/magento setup:static-content:deploy -f
 echo "Re-indexing with Elasticsearch..."
 bin/clinotty bin/magento indexer:reindex
 
+echo "Setting basic URL and generating SSL certificate..."
+bin/setup-domain "${DOMAIN}"
+
 echo "Clearing the cache to apply updates..."
 bin/clinotty bin/magento cache:flush
 
-echo "Generating SSL certificate..."
-bin/setup-ssl "$BASE_URL"
+echo "Installing cron, run 'bin/cron start' to enable..."
+bin/clinotty bin/magento cron:install
+
+echo "Turning on developer mode..."
+bin/clinotty bin/magento deploy:mode:set developer
+
+mv .vscode src/
 
 echo "Docker development environment setup complete."
-echo "You may now access your Magento instance at https://${BASE_URL}/"
+echo "You may now access your Magento instance at https://${DOMAIN}/"

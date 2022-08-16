@@ -41,11 +41,11 @@
         "magento/module-theme-sample-data": "100.4.*",
         "magento/module-widget-sample-data": "100.4.*",
         "magento/module-wishlist-sample-data": "100.4.*",
-        "magento/product-community-edition": "2.4.4",
+        "magento/product-community-edition": "2.4.5",
         "magento/sample-data-media": "100.4.*",
         "mageplaza/module-smtp": "^1.4",
         "rafaelstz/traducao_magento2_pt_br": "dev-master",
-        "ricardomartins/pagseguro": "dev-master"
+        "ricardomartins/pagseguro": "2.*"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "~1.5.0",

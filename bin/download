@@ -1,12 +1,28 @@
 #!/bin/bash
 
-VERSION=${1:-2.4.3-p1}
+VERSION=${1:-2.4.5-p1}
 EDITION=${2:-community}
 
 bin/stop
-docker-compose -f docker-compose.yml up -d
+
+bin/start --no-dev
 [ $? != 0 ] && echo "Failed to start Docker services" && exit
 
 bin/setup-composer-auth
 
-bin/clinotty composer create-project --repository=https://repo.magento.com/ magento/project-"${EDITION}"-edition="${VERSION}" .
+bin/fixowns
+
+if [ "$EDITION" == "mageos-nightly" ]; then
+  bin/clinotty composer create-project --stability alpha --repository-url=https://upstream-nightly.mage-os.org magento/project-community-edition .
+elif [ "$EDITION" == "mageos-mirror" ] || [ "$EDITION" == "mageos" ]; then
+  bin/clinotty composer create-project --repository-url=https://mirror.mage-os.org magento/project-community-edition="${VERSION}" .
+elif [ "$EDITION" == "mageos-hypernode-mirror" ]; then
+  bin/clinotty composer create-project --repository-url=https://mage-os.hypernode.com/mirror magento/project-community-edition="${VERSION}" .
+elif [ "$EDITION" == "mageos-maxcluster-mirror" ]; then
+  bin/clinotty composer create-project --repository-url=https://mage-os.maxcluster.net/mirror magento/project-community-edition="${VERSION}" .
+else
+  bin/clinotty composer create-project --repository=https://repo.magento.com/ magento/project-"${EDITION}"-edition="${VERSION}" .
+fi
+
+bin/clinotty [ ! -f "./var/composer_home/auth.json" ] && bin/clinotty mkdir -p ./var/composer_home && bin/clinotty cp /var/www/.composer/auth.json ./var/composer_home/auth.json
+

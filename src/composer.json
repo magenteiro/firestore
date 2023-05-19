@@ -19,7 +19,6 @@
         }
     },
     "require": {
-        "magedev/brazilzipcode": "^1.1",
         "magento/composer-dependency-version-audit-plugin": "~0.1",
         "magento/composer-root-update-plugin": "^2.0",
         "magento/module-bundle-sample-data": "100.4.*",
@@ -41,27 +40,29 @@
         "magento/module-theme-sample-data": "100.4.*",
         "magento/module-widget-sample-data": "100.4.*",
         "magento/module-wishlist-sample-data": "100.4.*",
-        "magento/product-community-edition": "2.4.5-p1",
+        "magento/product-community-edition": "2.4.6",
         "magento/sample-data-media": "100.4.*",
         "mageplaza/module-smtp": "^1.4",
         "rafaelstz/traducao_magento2_pt_br": "dev-master",
-        "ricardomartins/pagseguro": "2.*"
+        "ricardomartins/brazilcustomerattributes": "^1.1",
+        "ricardomartins/brazilzipcode": "^1.2",
+        "ricardomartins/pagseguro": "^2.19"
     },
     "require-dev": {
-        "allure-framework/allure-phpunit": "~1.5.0",
+        "allure-framework/allure-phpunit": "^2",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "dg/bypass-finals": "^1.4",
         "friendsofphp/php-cs-fixer": "~3.3.0",
-        "lusitanian/oauth": "~0.8.10",
-        "symfony/finder": "^5.2",
+        "lusitanian/oauth": "^0.8",
+        "symfony/finder": "^5.4",
         "mage2tv/magento-cache-clean": "^1.0",
         "magento/magento-coding-standard": "*",
-        "magento/magento2-functional-testing-framework": "^3.7",
-        "pdepend/pdepend": "~2.10.0",
+        "magento/magento2-functional-testing-framework": "^4.2.1",
+        "pdepend/pdepend": "^2.10",
         "phpmd/phpmd": "^2.9.1",
         "phpstan/phpstan": "~1.2.0",
         "phpunit/phpunit": "~9.5.0",
-        "sebastian/phpcpd": "^6.0.3",
-        "squizlabs/php_codesniffer": "~3.6.0"
+        "sebastian/phpcpd": "^6.0"
     },
     "conflict": {
         "gene/bluefoot": "*"

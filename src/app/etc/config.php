@@ -353,7 +353,7 @@ return [
         'Mageplaza_Smtp' => 1,
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeGraphQl' => 1,
-        'RicardoMartins_PagSeguro' => 1,
+        'RicardoMartins_PagBank' => 1,
         'SystemCode_BrazilCustomerAttributes' => 1,
         'Temando_ShippingRemover' => 1
     ]

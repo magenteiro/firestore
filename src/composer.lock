@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7320ceb644f2a7aab4103d35ad59c48",
+    "content-hash": "a3d8a0404a8a5598a5cf8bbcd3ec12cc",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -20431,22 +20431,16 @@
             "time": "2024-02-13T04:24:48+00:00"
         },
         {
-            "name": "ricardomartins/pagseguro",
-            "version": "2.22.5",
+            "name": "ricardomartins/pagbank-magento2",
+            "version": "4.2.3",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/ricardomartins/pagseguro/ricardomartins-pagseguro-2.22.5.0.zip",
-                "shasum": "412a7f70af0b2d7f3f843969feec9e5a022fb3a7"
+                "url": "https://repo.magento.com/archives/ricardomartins/pagbank-magento2/ricardomartins-pagbank-magento2-4.2.3.0.zip",
+                "shasum": "10ee314e00e9df295ddb787b2661a749ba7a7bb9"
             },
             "require": {
-                "ext-curl": "*",
-                "ext-iconv": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-mbstring": "*",
-                "ext-simplexml": "*",
-                "laminas/laminas-stdlib": "*",
-                "php": ">=7.4"
+                "magento/module-vault": "101.2.*",
+                "php": "~8.1.0||~8.2.0"
             },
             "type": "magento2-module",
             "autoload": {
@@ -20454,7 +20448,7 @@
                     "registration.php"
                 ],
                 "psr-4": {
-                    "RicardoMartins\\PagSeguro\\": ""
+                    "RicardoMartins\\PagBank\\": ""
                 }
             },
             "license": [
@@ -20464,9 +20458,13 @@
                 {
                     "name": "Ricardo Martins",
                     "email": "pagseguro-transparente@ricardomartins.net.br"
+                },
+                {
+                    "name": "Ligia Salzano",
+                    "email": "ligiasalzano@gmail.com"
                 }
             ],
-            "description": "Magento 2 Transparent Payment Module / PagSeguro Transparente para Magento 2"
+            "description": "Magento 2 Transparent Payment Module / PagBank Transparente para Magento 2"
         },
         {
             "name": "sabberworm/php-css-parser",
